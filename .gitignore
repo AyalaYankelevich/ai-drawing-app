@@ -6,6 +6,7 @@ build/
 # .NET
 bin/
 obj/
+*.db
 
 # Environment
 .env
