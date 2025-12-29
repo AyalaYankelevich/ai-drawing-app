@@ -1,0 +1,17 @@
+# Node
+node_modules/
+dist/
+build/
+
+# .NET
+bin/
+obj/
+
+# Environment
+.env
+.env.local
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
