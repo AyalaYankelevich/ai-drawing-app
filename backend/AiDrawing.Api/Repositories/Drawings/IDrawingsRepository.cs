@@ -7,4 +7,5 @@ public interface IDrawingsRepository
     Task<Drawing?> GetByIdAsync(Guid id, CancellationToken ct);
     Task AddAsync(Drawing drawing, CancellationToken ct);
     Task SaveChangesAsync(CancellationToken ct);
+    Task<List<Drawing>> ListByUserAsync(Guid userId, CancellationToken ct);
 }

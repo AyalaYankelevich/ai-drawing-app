@@ -39,4 +39,13 @@ public sealed class DrawingsController : ControllerBase
         var result = await _service.UpdateAsync(id, request, ct);
         return result is null ? NotFound() : Ok(result);
     }
+
+    [HttpGet]
+    public async Task<ActionResult<List<DrawingResponse>>> List(
+        [FromQuery] Guid userId,
+        CancellationToken ct)
+    {
+        var items = await _service.ListByUserAsync(userId, ct);
+        return Ok(items);
+    }
 }

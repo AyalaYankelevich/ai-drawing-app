@@ -1,19 +1,16 @@
 using AiDrawing.Api.Dtos;
 using AiDrawing.Api.Models;
 using AiDrawing.Api.Repositories.Drawings;
-using AiDrawing.Api.Services.Drawings;
 
 namespace AiDrawing.Api.Services.Drawings;
 
 public sealed class DrawingsService : IDrawingsService
 {
     private readonly IDrawingsRepository _drawingsRepo;
-    private readonly IDrawingRevisionsRepository _revisionsRepo;
 
-    public DrawingsService(IDrawingsRepository drawingsRepo, IDrawingRevisionsRepository revisionsRepo)
+    public DrawingsService(IDrawingsRepository drawingsRepo)
     {
         _drawingsRepo = drawingsRepo;
-        _revisionsRepo = revisionsRepo;
     }
 
     public async Task<DrawingResponse> CreateAsync(CreateDrawingRequest request, CancellationToken ct)
@@ -32,17 +29,6 @@ public sealed class DrawingsService : IDrawingsService
         };
 
         await _drawingsRepo.AddAsync(drawing, ct);
-
-        // Revision #1 (snapshot)
-        await _revisionsRepo.AddAsync(new DrawingRevision
-        {
-            Id = Guid.NewGuid(),
-            DrawingId = drawing.Id,
-            RevisionNumber = 1,
-            DrawingJson = drawing.DrawingJson,
-            CreatedAt = DateTime.UtcNow
-        }, ct);
-
         await _drawingsRepo.SaveChangesAsync(ct);
 
         return ToResponse(drawing);
@@ -63,16 +49,6 @@ public sealed class DrawingsService : IDrawingsService
         drawing.DrawingJson = request.DrawingJson;
         drawing.UpdatedAt = DateTime.UtcNow;
 
-        var nextRev = await _revisionsRepo.GetNextRevisionNumberAsync(id, ct);
-        await _revisionsRepo.AddAsync(new DrawingRevision
-        {
-            Id = Guid.NewGuid(),
-            DrawingId = id,
-            RevisionNumber = nextRev,
-            DrawingJson = drawing.DrawingJson,
-            CreatedAt = DateTime.UtcNow
-        }, ct);
-
         await _drawingsRepo.SaveChangesAsync(ct);
 
         return ToResponse(drawing);
@@ -87,4 +63,11 @@ public sealed class DrawingsService : IDrawingsService
         CreatedAt = d.CreatedAt,
         UpdatedAt = d.UpdatedAt
     };
+
+    public async Task<List<DrawingResponse>> ListByUserAsync(Guid userId, CancellationToken ct)
+    {
+        var drawings = await _drawingsRepo.ListByUserAsync(userId, ct);
+        return drawings.Select(ToResponse).ToList();
+    }
+
 }

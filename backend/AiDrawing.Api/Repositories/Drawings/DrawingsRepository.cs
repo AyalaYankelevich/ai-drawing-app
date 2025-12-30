@@ -21,4 +21,13 @@ public sealed class DrawingsRepository : IDrawingsRepository
     }
 
     public Task SaveChangesAsync(CancellationToken ct) => _db.SaveChangesAsync(ct);
+
+    public async Task<List<Drawing>> ListByUserAsync(Guid userId, CancellationToken ct)
+    {
+        return await _db.Drawings
+            .AsNoTracking()
+            .Where(d => d.UserId == userId)
+            .OrderByDescending(d => d.UpdatedAt ?? d.CreatedAt)
+            .ToListAsync(ct);
+    }
 }
