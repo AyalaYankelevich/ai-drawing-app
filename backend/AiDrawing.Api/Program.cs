@@ -32,7 +32,7 @@ builder.Services.AddScoped<IDrawingMessagesService, DrawingMessagesService>();
 
 // AI
 builder.Services.AddScoped<IAiService, AiService>();
-builder.Services.AddSingleton<ILlmClient, FakeLlmClient>();
+builder.Services.AddHttpClient<ILlmClient, OpenAiLlmClient>();
 
 var app = builder.Build();
 

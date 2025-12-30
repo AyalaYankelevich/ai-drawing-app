@@ -23,7 +23,7 @@ public sealed class DrawingsService : IDrawingsService
             Id = Guid.NewGuid(),
             UserId = userId,
             Title = request.Title,
-            DrawingJson = request.DrawingJson,
+            DrawingJson = request.DrawingJson ?? "[]",
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = null
         };

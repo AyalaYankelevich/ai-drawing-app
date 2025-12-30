@@ -34,8 +34,8 @@ public sealed class AiService : IAiService
             Id = Guid.NewGuid(),
             DrawingId = drawingId,
             UserPrompt = request.Prompt,
-            ModelName = "fake-llm",
-            RequestJson = "",       // אפשר להשאיר ריק בינתיים
+            ModelName = "openai-gpt-4.1-mini", 
+            RequestJson = "",
             ResponseJson = shapesJson,
             IsSuccess = true,
             ErrorText = null,

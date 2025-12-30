@@ -152,7 +152,7 @@ export default function App() {
       const shapes = safeParseShapes(shapesJson);
 
       // 3) update canvas
-      setHistory(h => push(h, shapes));
+      setHistory(h => push(h, [...h.present, ...shapes]));
 
       // 4) save assistant message (optional, but matches figma)
       const assistantMsg = await messagesApi.add(currentId, {
@@ -162,11 +162,17 @@ export default function App() {
       setMessages(prev => [...prev, assistantMsg]);
 
       // 5) auto-save drawing after AI (optional but feels great)
+//       await drawingsApi.update(currentId, {
+//   title: d.title,
+//   drawingJson: JSON.stringify([...history.present, ...shapes]),
+// });
+
       const d = await drawingsApi.getById(currentId);
       await drawingsApi.update(currentId, {
         title: d.title,
         drawingJson: JSON.stringify(shapes),
       });
+      
     } catch (e: any) {
       setError(e?.message ?? "Failed to send");
     } finally {
