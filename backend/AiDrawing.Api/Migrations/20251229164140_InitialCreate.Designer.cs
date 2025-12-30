@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AiDrawing.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251229140203_InitialCreate")]
+    [Migration("20251229164140_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -110,30 +110,6 @@ namespace AiDrawing.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DrawingMessages");
-                });
-
-            modelBuilder.Entity("AiDrawing.Api.Models.DrawingRevision", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("DrawingId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DrawingJson")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("RevisionNumber")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DrawingRevisions");
                 });
 
             modelBuilder.Entity("AiDrawing.Api.Models.User", b =>

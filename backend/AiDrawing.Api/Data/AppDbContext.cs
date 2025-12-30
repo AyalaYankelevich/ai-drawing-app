@@ -14,7 +14,6 @@ namespace AiDrawing.Api.Data
         public DbSet<Drawing> Drawings => Set<Drawing>();
         public DbSet<DrawingMessage> DrawingMessages => Set<DrawingMessage>();
         public DbSet<AiGeneration> AiGenerations => Set<AiGeneration>();
-        public DbSet<DrawingRevision> DrawingRevisions => Set<DrawingRevision>();
 
     }
 }

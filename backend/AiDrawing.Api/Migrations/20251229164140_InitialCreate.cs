@@ -46,21 +46,6 @@ namespace AiDrawing.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DrawingRevisions",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    DrawingId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    RevisionNumber = table.Column<int>(type: "INTEGER", nullable: false),
-                    DrawingJson = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DrawingRevisions", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Drawings",
                 columns: table => new
                 {
@@ -98,9 +83,6 @@ namespace AiDrawing.Api.Migrations
 
             migrationBuilder.DropTable(
                 name: "DrawingMessages");
-
-            migrationBuilder.DropTable(
-                name: "DrawingRevisions");
 
             migrationBuilder.DropTable(
                 name: "Drawings");

@@ -109,30 +109,6 @@ namespace AiDrawing.Api.Migrations
                     b.ToTable("DrawingMessages");
                 });
 
-            modelBuilder.Entity("AiDrawing.Api.Models.DrawingRevision", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("DrawingId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DrawingJson")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("RevisionNumber")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DrawingRevisions");
-                });
-
             modelBuilder.Entity("AiDrawing.Api.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
