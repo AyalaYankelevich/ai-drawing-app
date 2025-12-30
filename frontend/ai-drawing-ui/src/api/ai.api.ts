@@ -1,6 +1,7 @@
 import { http } from "./client";
 
-export type AiGenerateRequest = { drawingId: string; prompt: string };
+export type AiGenerateRequest = { drawingId: string; prompt: string; currentDrawingJson: string };
+
 
 // אצלך זה כנראה { shapesJson: "..." }
 export type AiGenerateResponse = { shapesJson?: string; responseJson?: string };

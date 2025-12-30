@@ -26,7 +26,12 @@ public sealed class AiService : IAiService
         var exists = await _db.Drawings.AsNoTracking().AnyAsync(d => d.Id == drawingId, ct);
         if (!exists) throw new ArgumentException("Drawing not found.");
 
-        var shapesJson = await _llm.GenerateShapesJsonAsync(request.Prompt, ct);
+        var shapesJson = await _llm.GenerateShapesJsonAsync(
+            request.Prompt,
+            request.CurrentDrawingJson,
+            ct
+        );
+
 
         // לוג ל־ai_generations
         _db.AiGenerations.Add(new AiGeneration

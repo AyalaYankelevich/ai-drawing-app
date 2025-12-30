@@ -4,7 +4,7 @@ namespace AiDrawing.Api.Infrastructure.Ai;
 
 public sealed class FakeLlmClient : ILlmClient
 {
-    public Task<string> GenerateShapesJsonAsync(string prompt, CancellationToken ct)
+    public Task<string> GenerateShapesJsonAsync(string prompt, string currentDrawingJson, CancellationToken ct)
     {
         // JSON מינימלי של shapes: rect + circle
         var shapes = new object[]

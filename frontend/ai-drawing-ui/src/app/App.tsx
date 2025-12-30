@@ -147,9 +147,20 @@ export default function App() {
       setPrompt("");
 
       // 2) call AI
-      const aiRes = await aiApi.generate({ drawingId: currentId, prompt: text });
+      const aiRes = await aiApi.generate({
+        drawingId: currentId,
+        prompt: text,
+        currentDrawingJson: JSON.stringify(history.present),
+      });
+
       const shapesJson = aiRes.shapesJson ?? aiRes.responseJson ?? "[]";
       const shapes = safeParseShapes(shapesJson);
+      if (shapes.length === 0) {
+        await messagesApi.add(currentId, { role: "assistant", messageText: "לא הצלחתי להוסיף לציור. נסי ניסוח אחר." });
+        return;
+      }
+      console.log("AI RAW:", aiRes);
+      console.log("AI shapesJson:", aiRes.shapesJson);
 
       // 3) update canvas
       setHistory(h => push(h, [...h.present, ...shapes]));

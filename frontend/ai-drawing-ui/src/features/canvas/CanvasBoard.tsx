@@ -5,13 +5,21 @@ import { drawShapes } from "./canvasDraw";
 export function CanvasBoard({ shapes }: { shapes: Shape[] }) {
   const ref = useRef<HTMLCanvasElement | null>(null);
 
-  useEffect(() => {
-    const c = ref.current;
-    if (!c) return;
-    const ctx = c.getContext("2d");
-    if (!ctx) return;
-    drawShapes(ctx, shapes);
-  }, [shapes]);
+useEffect(() => {
+  const c = ref.current;
+  if (!c) return;
+
+  const ctx = c.getContext("2d");
+  if (!ctx) return;
+
+  ctx.clearRect(0, 0, c.width, c.height);
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, c.width, c.height);
+
+  drawShapes(ctx, shapes);
+}, [shapes]);
+
+
 
   return (
     <div className="canvasWrap">
