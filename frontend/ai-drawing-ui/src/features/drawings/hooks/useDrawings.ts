@@ -14,8 +14,8 @@ export function useDrawings() {
   const current = drawings.find(d => d.id === currentId) ?? null;
 
   // Load drawings list on demand (lazy loading)
-  const loadDrawings = useCallback(async () => {
-    if (hasLoaded) return; // Already loaded, skip
+  const loadDrawings = useCallback(async (forceReload = false) => {
+    if (hasLoaded && !forceReload) return; // Already loaded, skip unless forced
 
     setError(null);
     setIsLoading(true);
@@ -34,21 +34,36 @@ export function useDrawings() {
   const createNewDrawing = useCallback(async () => {
     setError(null);
     try {
-      // If drawings haven't been loaded yet, load them first to get the count
-      if (!hasLoaded) {
-        await loadDrawings();
-      }
+      // Always reload drawings list first to ensure we have the latest data
+      // This prevents duplicate numbers and ensures accuracy
+      const currentList = await drawingsApi.listByUser(USER_ID);
+      setDrawings(currentList);
+      setHasLoaded(true);
       
-      const nextNumber = drawings.length + 1;
+      // Calculate next number based on existing drawing numbers, not just count
+      // Extract numbers from titles like "Drawing #1", "Drawing #2", etc.
+      const existingNumbers = currentList
+        .map(d => {
+          const match = d.title.match(/^Drawing #(\d+)$/);
+          return match ? parseInt(match[1], 10) : 0;
+        })
+        .filter(n => n > 0);
+      
+      const maxNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) : 0;
+      const nextNumber = maxNumber + 1;
+      
       const created = await drawingsApi.create({ title: `Drawing #${nextNumber}`, userId: USER_ID });
-      setDrawings(prev => [created, ...prev]);
+      
+      // Reload drawings list again to include the newly created drawing
+      const updatedList = await drawingsApi.listByUser(USER_ID);
+      setDrawings(updatedList);
       setCurrentId(created.id);
       return created;
     } catch (e: any) {
       setError(e?.message ?? "Failed to create drawing");
       throw e;
     }
-  }, [hasLoaded, drawings.length, loadDrawings]);
+  }, []);
 
   const updateDrawing = useCallback(async (id: string, title: string, drawingJson: string) => {
     setError(null);
