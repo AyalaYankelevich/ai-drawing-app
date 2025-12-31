@@ -8,6 +8,7 @@ bin/
 obj/
 *.db
 appsettings.Development.json
+**/Properties/launchSettings.json
 
 # Environment
 .env

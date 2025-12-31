@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
@@ -13,11 +14,17 @@ public sealed class OpenAiLlmClient : ILlmClient
     {
         _http = http;
 
-        var apiKey = cfg["OpenAI:ApiKey"];
+        // Try environment variable first (more secure), then fall back to config
+        var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY") 
+                     ?? cfg["OpenAI:ApiKey"];
+        
         if (string.IsNullOrWhiteSpace(apiKey))
-            throw new InvalidOperationException("Missing OpenAI:ApiKey in configuration (appsettings.Development.json).");
+            throw new InvalidOperationException(
+                "Missing OpenAI API Key. Set OPENAI_API_KEY environment variable or configure OpenAI:ApiKey in appsettings.json");
 
-        _model = cfg["OpenAI:Model"] ?? "gpt-4.1-mini";
+        _model = Environment.GetEnvironmentVariable("OPENAI_MODEL") 
+                 ?? cfg["OpenAI:Model"] 
+                 ?? "gpt-4.1-mini";
 
         _http.BaseAddress = new Uri("https://api.openai.com/");
         _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
