@@ -1,4 +1,4 @@
-import type { Shape } from "../../types/models";
+import type { Shape } from "../../../types/models";
 
 export function drawShapes(ctx: CanvasRenderingContext2D, shapes: Shape[]) {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -22,3 +22,4 @@ export function drawShapes(ctx: CanvasRenderingContext2D, shapes: Shape[]) {
     }
   }
 }
+
