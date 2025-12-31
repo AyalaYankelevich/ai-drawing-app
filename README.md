@@ -3,8 +3,8 @@
 AI-powered drawing application where users describe a scene in natural language and receive a generated drawing on a canvas.
 
 ## Project Demonstration
-You can watch a full demo of the application here: View Demo on Google Drive
-
+You can watch a full demo of the application here:
+[View Demo on Google Drive](https://drive.google.com/file/d/1Gk8jWgnAmcKPfgJ4mkvU0E1eY1kyNQ5U/view?usp=sharing)
 
 ## Tech Stack
 - Frontend: React + TypeScript
