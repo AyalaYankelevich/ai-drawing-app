@@ -1,26 +1,25 @@
 # AiDrawing API
 
-## Environment Variables
-
-**Required:**
-- `OPENAI_API_KEY` - Your OpenAI API key
-
-**Optional:**
-- `OPENAI_MODEL` - Model to use (default: "gpt-4.1-mini")
-
 ## Setup
 
 ### Step 1: Configure API Key
 
-Copy the example file and add your API key:
-```bash
-# Copy the example file
-cp Properties/launchSettings.json.example Properties/launchSettings.json
+**Recommended way:** Edit `Properties/launchSettings.json` and add your API key:
 
-# Then edit Properties/launchSettings.json and replace "your-openai-api-key-here" with your actual API key
-```
+1. Open `backend/AiDrawing.Api/Properties/launchSettings.json`
+2. Find the `environmentVariables` section in your profile (http or https)
+3. Replace `"your-openai-api-key-here"` with your actual OpenAI API key:
+   ```json
+   "environmentVariables": {
+     "ASPNETCORE_ENVIRONMENT": "Development",
+     "OPENAI_API_KEY": "sk-your-actual-api-key-here",
+     "OPENAI_MODEL": "gpt-4.1-mini"
+   }
+   ```
 
-Or set environment variable manually:
+**Note:** `launchSettings.json` is in `.gitignore` - your API key will NOT be committed to git.
+
+**Alternative:** Set environment variable manually before running:
 ```bash
 # Windows PowerShell
 $env:OPENAI_API_KEY="your-api-key-here"
@@ -40,10 +39,12 @@ dotnet run
 ## How it works
 
 The API checks for the API key in this order:
-1. `OPENAI_API_KEY` environment variable (from system or launchSettings.json)
-2. `appsettings.json` → `OpenAI:ApiKey` (fallback)
+1. `OPENAI_API_KEY` environment variable (from system or `launchSettings.json`) ✅ **Recommended**
+2. `appsettings.Development.json` → `OpenAI:ApiKey` (fallback)
+3. `appsettings.json` → `OpenAI:ApiKey` (fallback)
 
-**Note:** 
+**Security Notes:** 
 - `launchSettings.json` is in `.gitignore` - your API key will NOT be committed to git
-- Never commit your API key! Always use `launchSettings.json.example` as a template
+- `launchSettings.json.example` is safe to commit (contains only placeholders)
+- Never commit your API key! Always use the example file as a template
 
